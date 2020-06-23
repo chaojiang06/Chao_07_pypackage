@@ -111,3 +111,6 @@ def separate_lines_into_paragraphs(data):
         paragraph_list.append(current_paragraph)
     
     return paragraph_list
+
+def flatten_a_list(l):
+    return [item for sublist in l for item in sublist]
