@@ -57,6 +57,20 @@ def read_tsv_file(path):
     
     return data
 
+def read_csv_file_in_alignment_viewer_format(path):
+    
+    data = []
+    
+    with open(path) as f:
+        reader = csv.reader(f, delimiter='|', quotechar='', quoting=csv.QUOTE_NONE)    
+        for idx, line in enumerate(reader):
+            if idx == 0:
+                continue
+            else:
+                data.append(line)
+    
+    return data
+
 def read_txt_file(path):
         
     with open(path) as f:
