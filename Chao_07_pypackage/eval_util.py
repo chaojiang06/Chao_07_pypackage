@@ -180,3 +180,110 @@ def max_f1_eval(predict_result, test_data_label, predefine_threshold = None):
     return res_for_return
     # return ((thres_maxF1, P_maxF1, R_maxF1, maxF1), (P,R,F))
 
+
+def f1_eval(predict_result, test_data_label, predefine_threshold = None):
+    res_for_return = {}
+
+    counter = 0
+    tp = 0.0
+    fp = 0.0
+    fn = 0.0
+    tn = 0.0
+
+    for i, t in enumerate(predict_result):
+
+        if t > 0.5:
+            guess = True
+        else:
+            guess = False
+        label = test_data_label[i]
+        # print guess, label
+        if guess == True and label == False:
+            fp += 1.0
+        elif guess == False and label == True:
+            fn += 1.0
+        elif guess == True and label == True:
+            tp += 1.0
+        elif guess == False and label == False:
+            tn += 1.0
+        if label == guess:
+            counter += 1.0
+        # else:
+        # print label+'--'*20
+        # if guess:
+        # print "GOLD-" + str(label) + "\t" + "SYS-" + str(guess) + "\t" + sent1 + "\t" + sent2
+
+    try:
+        P = tp / (tp + fp)
+        R = tp / (tp + fn)
+        F = 2 * P * R / (P + R)
+    except:
+        P = 0
+        R = 0
+        F = 0
+
+    # print("at threshold {}, precision: {}, recall: {}, F1: {}".format(0.5, P,R,F))
+    res_for_return["f1"] = {"threshold":0.5, "precision":P, "recall":R, "f1":F}
+    #print "PRECISION: %s, RECALL: %s, F1: %s" % (P, R, F)
+    #print "ACCURACY: %s" % (counter / len(predict_result))
+
+    counter = 0
+    tp = 0.0
+    fp = 0.0
+    fn = 0.0
+    tn = 0.0
+    
+    if predefine_threshold == None:
+        predefine_threshold = 0.5
+        
+    for i, t in enumerate(predict_result):
+
+        
+        
+        if t > predefine_threshold:
+            guess = True
+        else:
+            guess = False
+        label = test_data_label[i]
+        # print guess, label
+        if guess == True and label == False:
+            fp += 1.0
+        elif guess == False and label == True:
+            fn += 1.0
+        elif guess == True and label == True:
+            tp += 1.0
+        elif guess == False and label == False:
+            tn += 1.0
+        if label == guess:
+            counter += 1.0
+        # else:
+        # print label+'--'*20
+        # if guess:
+        # print "GOLD-" + str(label) + "\t" + "SYS-" + str(guess) + "\t" + sent1 + "\t" + sent2
+
+    try:
+        P = tp / (tp + fp)
+        R = tp / (tp + fn)
+        F = 2 * P * R / (P + R)
+    except:
+        P = 0
+        R = 0
+        F = 0
+        
+    # print("at pre-defined threshold, tp is {}".format(tp))
+#     print("tp: {}, fp: {}, fn: {}".format(tp,fp,fn))
+
+            
+
+    # print("at pre-defined threshold {}, precision: {}, recall: {}, F1: {}".format(predefine_threshold, P,R,F))
+    # print("max F1 precision: {}, max F1 recall: {}, max F1: {}, threshold is {}".format(P_maxF1,R_maxF1,maxF1, thres_maxF1))
+    # print("max f1 tp: {}, max f1 fp: {}, tp + fn: {}".format(truepos_maxf1,falsepos_maxf1,tp + fn))
+    res_for_return["f1_at_pre-defined_threshold"] = {"threshold":predefine_threshold, "precision":P, "recall":R, "f1":F, "tp":tp, 'fp':fp, 'fn':fn}
+
+    # res_for_return.append([thres_maxF1, P_maxF1,R_maxF1,maxF1])
+    # res_for_return.append([predefine_threshold, P,R,F])
+    
+    return res_for_return
+    # return ((thres_maxF1, P_maxF1, R_maxF1, maxF1), (P,R,F))
+
+
