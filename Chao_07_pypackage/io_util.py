@@ -85,7 +85,7 @@ def read_json_file(path):
 
 def write_json_file(file, path):
     with open(path, 'w') as outfile:
-        json.dump(file, outfile)
+        json.dump(file, outfile, indent = 2)
 
 def separate_lines_into_paragraphs(data):
     """
